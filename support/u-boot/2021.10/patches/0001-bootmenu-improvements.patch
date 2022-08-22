@@ -9,41 +9,40 @@ not change the background color.
 
 This, instead, uses characters to show which option is currently active.
 ---
- cmd/bootmenu.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ cmd/bootmenu.c                    |   15 +++++++++------
 
 diff --git a/cmd/bootmenu.c b/cmd/bootmenu.c
-index 704d36de..a3b5b5d7 100644
+index 704d36de..d5070635 100644
 --- a/cmd/bootmenu.c
 +++ b/cmd/bootmenu.c
 @@ -65,21 +65,24 @@ static char *bootmenu_getoption(unsigned short int n)
  static void bootmenu_print_entry(void *data)
  {
-        struct bootmenu_entry *entry = data;
--       int reverse = (entry->menu->active == entry->num);
+ 	struct bootmenu_entry *entry = data;
+-	int reverse = (entry->menu->active == entry->num);
 -
 +       int active = (entry->menu->active == entry->num);
-        /*
-         * Move cursor to line where the entry will be drown (entry->num)
-         * First 3 lines contain bootmenu header + 1 empty line
-         */
-        printf(ANSI_CURSOR_POSITION, entry->num + 4, 7);
+ 	/*
+ 	 * Move cursor to line where the entry will be drown (entry->num)
+ 	 * First 3 lines contain bootmenu header + 1 empty line
+ 	 */
+ 	printf(ANSI_CURSOR_POSITION, entry->num + 4, 7);
 +       puts(ANSI_CLEAR_LINE);
 
--       if (reverse)
--               puts(ANSI_COLOR_REVERSE);
+-	if (reverse)
+-		puts(ANSI_COLOR_REVERSE);
 +       if (active)
 +               puts("  => [");
 +       else
 +               puts("     ");
 
-        printf("%s", entry->title);
-+
+ 	printf("%s", entry->title);
+
+-	if (reverse)
+-		puts(ANSI_COLOR_RESET);
 +       if (active)
 +               puts("]");
-
--       if (reverse)
--               puts(ANSI_COLOR_RESET);
++
  }
 
  static char *bootmenu_choice_entry(void *data)
@@ -111,25 +110,9 @@ This is done through resetting the column to 1 and clearing the line for
 maximum compatibility. Tested against serial, default dm_video and the
 truetype console.
 ---
- common/Kconfig.boot |  4 ++--
  common/autoboot.c   | 11 ++++++++---
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ 1 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/common/Kconfig.boot b/common/Kconfig.boot
-index 9c335f4f8c..6611377086 100644
---- a/common/Kconfig.boot
-+++ b/common/Kconfig.boot
-@@ -783,8 +783,8 @@ config AUTOBOOT_KEYED
- 
- config AUTOBOOT_PROMPT
- 	string "Autoboot stop prompt"
--	depends on AUTOBOOT_KEYED
--	default "Autoboot in %d seconds\\n"
-+	default "Autoboot in %d seconds\\n" if AUTOBOOT_KEYED
-+	default "Hit any key to stop autoboot: %2d \\n"
- 	help
- 	  This string is displayed before the boot delay selected by
- 	  CONFIG_BOOTDELAY starts. If it is not defined	there is no
 diff --git a/common/autoboot.c b/common/autoboot.c
 index 0bb08e7a4c..3129447228 100644
 --- a/common/autoboot.c

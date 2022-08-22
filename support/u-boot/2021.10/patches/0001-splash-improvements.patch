@@ -81,10 +81,10 @@ index 74fcadca63..d8727c227f 100644
  		exit (EXIT_FAILURE);
  	}
 -
-+	
++
  	if (fgetc (fp) != 'B' || fgetc (fp) != 'M')
  		error ("Input file is not a bitmap", fp);
-+	
++
 +	if (mode == MODE_GEN_BMP_GZ){
 +		gzfp = fopen(argv[3], "rb");
 +		if (!gzfp) {
@@ -136,18 +136,19 @@ Subject: [PATCH 2/3] [Tow-Boot] force logo.h splash
 
 This is a scorched earth method. But it works.
 ---
- common/splash.c | 130 ++++--------------------------------------------
- 1 file changed, 9 insertions(+), 121 deletions(-)
+ common/splash.c | 129 +++++++++------------------------------------------------------------------------------------------------------------------------
+ 1 file changed, 9 insertions(+), 120 deletions(-)
 
 diff --git a/common/splash.c b/common/splash.c
-index de720df9f5..b907c64fec 100644
+index 98f00892..5d9e043e 100644
 --- a/common/splash.c
 +++ b/common/splash.c
-@@ -24,74 +24,16 @@
+@@ -24,74 +24,17 @@
  #include <env.h>
  #include <splash.h>
  #include <lcd.h>
--
++#include <mapmem.h>
+
 -static struct splash_location default_splash_locations[] = {
 -	{
 -		.name = "sf",
@@ -175,9 +176,8 @@ index de720df9f5..b907c64fec 100644
 -	},
 -};
 -
--#if defined(CONFIG_DM_VIDEO) && defined(CONFIG_VIDEO_LOGO)
+-#ifdef CONFIG_VIDEO_LOGO
 -
-+#include <mapmem.h>
 +#if defined(CONFIG_SPLASH_SCREEN) && defined(CONFIG_CMD_BMP)
 +#include <bmp_logo.h>
  #include <bmp_logo_data.h>
@@ -205,7 +205,7 @@ index de720df9f5..b907c64fec 100644
 -#else
 -static inline int splash_video_logo_load(void) { return -ENOSYS; }
  #endif
- 
+
 -__weak int splash_screen_prepare(void)
 -{
 -	if (CONFIG_IS_ENABLED(SPLASH_SOURCE))
@@ -218,14 +218,14 @@ index de720df9f5..b907c64fec 100644
  #ifdef CONFIG_SPLASH_SCREEN_ALIGN
  void splash_get_pos(int *x, int *y)
  {
-+	printf("-> %s @ %d\n", __func__, __LINE__);
++	printf("-> %s @ %d\n", __func__, __LINE__);
  	char *s = env_get("splashpos");
- 
+
  	if (!s)
-@@ -112,73 +54,19 @@ void splash_get_pos(int *x, int *y)
+@@ -112,73 +55,19 @@ void splash_get_pos(int *x, int *y)
  }
  #endif /* CONFIG_SPLASH_SCREEN_ALIGN */
- 
+
 -#if defined(CONFIG_DM_VIDEO) && !defined(CONFIG_HIDE_LOGO_VERSION)
 -
 -#ifdef CONFIG_VIDEO_LOGO
@@ -284,7 +284,7 @@ index de720df9f5..b907c64fec 100644
 -	if (ret)
 -		return ret;
 +	int x = -1, y = -1;
- 
+
 -	splash_get_pos(&x, &y);
 -
 -	ret = bmp_display(addr, x, y);
@@ -323,10 +323,10 @@ previous stage was verbose.
  1 file changed, 19 insertions(+)
 
 diff --git a/common/autoboot.c b/common/autoboot.c
-index 1cca4172bf..add1bf481b 100644
+index 63f25879..bd332a04 100644
 --- a/common/autoboot.c
 +++ b/common/autoboot.c
-@@ -19,6 +19,7 @@
+@@ -18,6 +18,7 @@
  #include <memalign.h>
  #include <menu.h>
  #include <post.h>
@@ -345,7 +345,7 @@ index 1cca4172bf..add1bf481b 100644
  	 * To print the bootdelay value upon bootup.
  	 */
 +
-+	if (IS_ENABLED(CONFIG_SPLASH_SCREEN) && IS_ENABLED(CONFIG_CMD_BMP)) {
++if (IS_ENABLED(CONFIG_SPLASH_SCREEN) && IS_ENABLED(CONFIG_CMD_BMP)) {
 +		if (vidconsole) {
 +			vidconsole->puts(vidconsole, ANSI_CLEAR_CONSOLE);
 +			vidconsole->puts(vidconsole, "\e[99;0H");
@@ -354,13 +354,13 @@ index 1cca4172bf..add1bf481b 100644
 +	}
  	printf(CONFIG_AUTOBOOT_PROMPT, bootdelay);
  #  endif
- 
+
 @@ -364,7 +375,15 @@ static int abortboot_single_key(int bootdelay)
  {
  	int abort = 0;
  	unsigned long ts;
 +	struct stdio_dev *vidconsole = console_search_dev(DEV_FLAGS_OUTPUT, "vidconsole");
- 
+
 +	if (IS_ENABLED(CONFIG_SPLASH_SCREEN) && IS_ENABLED(CONFIG_CMD_BMP)) {
 +		if (vidconsole) {
 +			vidconsole->puts(vidconsole, ANSI_CLEAR_CONSOLE);
@@ -368,8 +368,8 @@ index 1cca4172bf..add1bf481b 100644
 +		}
 +		splash_display();
 +	}
- 	printf(CONFIG_AUTOBOOT_PROMPT, bootdelay);
- 
+ 	printf("Hit any key to stop autoboot: %2d ", bootdelay);
+
  	/*
 -- 
 2.32.0
