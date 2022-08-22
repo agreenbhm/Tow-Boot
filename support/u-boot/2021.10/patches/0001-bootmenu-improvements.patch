@@ -9,45 +9,44 @@ not change the background color.
 
 This, instead, uses characters to show which option is currently active.
 ---
- cmd/bootmenu.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ cmd/bootmenu.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/cmd/bootmenu.c b/cmd/bootmenu.c
-index 409ef9a848..57bdf07f47 100644
+index 704d36de..a3b5b5d7 100644
 --- a/cmd/bootmenu.c
 +++ b/cmd/bootmenu.c
-@@ -62,23 +62,24 @@ static char *bootmenu_getoption(unsigned short int n)
+@@ -65,21 +65,24 @@ static char *bootmenu_getoption(unsigned short int n)
  static void bootmenu_print_entry(void *data)
  {
- 	struct bootmenu_entry *entry = data;
--	int reverse = (entry->menu->active == entry->num);
-+	int active = (entry->menu->active == entry->num);
- 
- 	/*
- 	 * Move cursor to line where the entry will be drown (entry->num)
- 	 * First 3 lines contain bootmenu header + 1 empty line
- 	 */
- 	printf(ANSI_CURSOR_POSITION, entry->num + 4, 1);
-+	puts(ANSI_CLEAR_LINE);
- 
--	puts("     ");
+        struct bootmenu_entry *entry = data;
+-       int reverse = (entry->menu->active == entry->num);
 -
--	if (reverse)
--		puts(ANSI_COLOR_REVERSE);
-+	if (active)
-+		puts("  => [");
-+	else
-+		puts("     ");
- 
- 	puts(entry->title);
- 
--	if (reverse)
--		puts(ANSI_COLOR_RESET);
-+	if (active)
-+		puts("]");
++       int active = (entry->menu->active == entry->num);
+        /*
+         * Move cursor to line where the entry will be drown (entry->num)
+         * First 3 lines contain bootmenu header + 1 empty line
+         */
+        printf(ANSI_CURSOR_POSITION, entry->num + 4, 7);
++       puts(ANSI_CLEAR_LINE);
+
+-       if (reverse)
+-               puts(ANSI_COLOR_REVERSE);
++       if (active)
++               puts("  => [");
++       else
++               puts("     ");
+
+        printf("%s", entry->title);
++
++       if (active)
++               puts("]");
+
+-       if (reverse)
+-               puts(ANSI_COLOR_RESET);
  }
- 
- static void bootmenu_autoboot_loop(struct bootmenu_data *menu,
+
+ static char *bootmenu_choice_entry(void *data)
 -- 
 2.29.2
 
