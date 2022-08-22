@@ -11,12 +11,14 @@ in
 
 {
   Tow-Boot = {
-    uBootVersion = mkDefault "2021.10";
+    uBootVersion = mkDefault "2022.07";
+#    uBootVersion = mkDefault "2021.10";
 
     patches = mkIf (config.Tow-Boot.useDefaultPatches) (
       let
         patchSets = {
-          "2021.10" = let base = ../../support/u-boot/2021.10/patches; in [
+#          "2021.10" = let base = ../../support/u-boot/2021.10/patches; in [
+          "2022.07" = let base = ../../support/u-boot/2021.10/patches; in [
             # Misc patches to upstream
             (base + "/0001-cmd-Add-pause-command.patch")
             (base + "/0001-cmd-env-Add-indirect-to-indirectly-set-values.patch")
@@ -75,6 +77,7 @@ in
           "2021.07" = "sha256-MSt+6uRFgdE2LDo/AsKNgGZHdWyCuoxyJBx82+aLp34=";
           "2021.10" = "1m0bvwv8r62s4wk4w3cmvs888dhv9gnfa98dczr4drk2jbhj7ryd";
           "2022.01" = "sha256-gbRUMifbIowD+KG/XdvIE7C7j2VVzkYGTvchpvxoBBM=";
+          "2022.07" = "sha256-krCOtJwk2hTBrb9wpxro83zFPutCMOhZrYtnM9E9z14=";  
         };
       in
       mkDefault (pkgs.fetchurl {
