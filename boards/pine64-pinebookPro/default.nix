@@ -19,8 +19,9 @@
     patches = [
       ./0001-rk3399-light-pinebook-power-and-standby-leds-during-.patch
       ./0001-rk3399-pinebook-pro-Support-SPI-flash-boot.patch
-      ./0001-arch-arm-dts-Sync-rk3399-pinebook-pro-with-Linux.patch
+      #./0001-arch-arm-dts-Sync-rk3399-pinebook-pro-with-Linux.patch
       ./0005-PBP-Fix-Panel-reset.patch
+      ./0006-PBP-defconfig.patch
 
       # phy: rockchip: inno-usb2: fix hang when multiple controllers
       (pkgs.fetchpatch {

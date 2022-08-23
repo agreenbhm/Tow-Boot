@@ -20,6 +20,8 @@ in
 #          "2021.10" = let base = ../../support/u-boot/2021.10/patches; in [
           "2022.07" = let base = ../../support/u-boot/2021.10/patches; in [
             # Misc patches to upstream
+            #(base + "/0008-autoboot-prompt-fix.patch")
+            (base + "/0007-boot_Kconfig_menu_prompt.patch")
             (base + "/0001-cmd-Add-pause-command.patch")
             (base + "/0001-cmd-env-Add-indirect-to-indirectly-set-values.patch")
             (base + "/0001-lib-export-vsscanf.patch")

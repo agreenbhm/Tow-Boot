@@ -99,22 +99,24 @@ Subject: [PATCH 2/3] input: sync video on user input request
 This "finishes" trailing, or hanging, video updates that might not have
 been synced yet. See the previous sibling commit.
 ---
- common/usb_kbd.c                | 11 +++++++++++
+ common/usb_kbd.c | 2 +-
  drivers/input/keyboard-uclass.c | 11 +++++++++++
  2 files changed, 22 insertions(+)
 
 diff --git a/common/usb_kbd.c b/common/usb_kbd.c
-index afad260d3d..dedac3cf6e 100644
+index 352d86fb..fc87a45f 100644
 --- a/common/usb_kbd.c
 +++ b/common/usb_kbd.c
-@@ -17,6 +17,7 @@
- #include <stdio_dev.h>
- #include <watchdog.h>
- #include <asm/byteorder.h>
+@@ -20,7 +20,7 @@
+ #ifdef CONFIG_SANDBOX
+ #include <asm/state.h>
+ #endif
+-
 +#include <video.h>
- 
  #include <usb.h>
- 
+
+ /*
+
 @@ -394,6 +395,11 @@ static int usb_kbd_testc(struct stdio_dev *sdev)
  	struct usb_device *usb_kbd_dev;
  	struct usb_kbd_pdata *data;

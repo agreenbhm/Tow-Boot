@@ -360,7 +360,7 @@ index 63f25879..bd332a04 100644
  	int abort = 0;
  	unsigned long ts;
 +	struct stdio_dev *vidconsole = console_search_dev(DEV_FLAGS_OUTPUT, "vidconsole");
-
+ 
 +	if (IS_ENABLED(CONFIG_SPLASH_SCREEN) && IS_ENABLED(CONFIG_CMD_BMP)) {
 +		if (vidconsole) {
 +			vidconsole->puts(vidconsole, ANSI_CLEAR_CONSOLE);
@@ -368,9 +368,8 @@ index 63f25879..bd332a04 100644
 +		}
 +		splash_display();
 +	}
- 	printf("Hit any key to stop autoboot: %2d ", bootdelay);
-
+ 	printf(CONFIG_AUTOBOOT_PROMPT, bootdelay);
+ 
  	/*
 -- 
 2.32.0
-

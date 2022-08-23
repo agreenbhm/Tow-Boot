@@ -52,16 +52,16 @@ in
 
       # So we'll fake that using CTRL+C is what we want...
       # It's only a side-effect.
-      AUTOBOOT_PROMPT =
-        let
-          reset = "\\e[0m";
-          bright = "\\e[1m";
-        in
-        lib.mkIf config.Tow-Boot.useDefaultPatches (
-          freeform ''"${reset}Please press [${bright}ESCAPE${reset}] or [${bright}CTRL+C${reset}] to enter the boot menu."''
-        )
-      ;
-
+#      AUTOBOOT_PROMPT =
+#        let
+#          reset = "\\e[0m";
+#          bright = "\\e[1m";
+#        in
+#        lib.mkIf config.Tow-Boot.useDefaultPatches (
+#          freeform ''"${reset}Please press [${bright}ESCAPE${reset}] or [${bright}CTRL+C${reset}] to enter the boot menu."''
+#        )
+#      ;
+      
       # And this ends up causing the menu to be used on ESCAPE (or CTRL+C)
       AUTOBOOT_USE_MENUKEY = yes;
 
@@ -140,7 +140,7 @@ in
       SPLASH_SCREEN = yes;
       SPLASH_SCREEN_ALIGN = yes;
       VIDEO_BMP_GZIP = yes;
-      VIDEO_BMP_RLE8 = no;
+      VIDEO_BMP_RLE8 = yes;
       BMP_16BPP = yes;
       BMP_24BPP = yes;
       BMP_32BPP = yes;

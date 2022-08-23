@@ -1,0 +1,16 @@
+\ boot/Kconfig | 1 -+
+ 1 file changed, 1 addition(+), 1 deletion(-)
+diff --git a/boot/Kconfig b/boot/Kconfig
+index 08451c6..be9a99c 100644
+--- a/boot/Kconfig
++++ b/boot/Kconfig
+@@ -1119,7 +1119,7 @@ config AUTOBOOT_STOP_STR_SHA256
+ 
+ config AUTOBOOT_USE_MENUKEY
+ 	bool "Allow a specify key to run a menu from the environment"
+-	depends on !AUTOBOOT_KEYED
++	default y
+ 	help
+ 	  If a specific key is pressed to stop autoboot, then the commands in
+ 	  the environment variable 'menucmd' are executed before boot starts.
+--

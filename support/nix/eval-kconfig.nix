@@ -113,6 +113,7 @@
                   value=$(grep 'CONFIG_${key}[= ]' .config || :)
                   if [[ -z "$value" ]]; then
                     echo "CONFIG_${key} is expected to be set to «"${line}"», but is not present in config file."
+		    echo ".config file path: ($PWD)"
                     else
                     echo "CONFIG_${key} not set to «"${line}"»... set to: «$value»."
                   fi

@@ -84,14 +84,14 @@ in
               sha256 = "sha256-mDWlJQQjQykb9kzIKZYEBI2Ktdpgc7LZyWspvb2F62w=";
             })
           ])
-          (mkIf ((versionAtLeast config.Tow-Boot.uBootVersion "2021.10")) [
+          #(mkIf ((versionAtLeast config.Tow-Boot.uBootVersion "2021.10")) [
             # Fix eMMC regressions.
-            (fetchpatch {
+          #  (fetchpatch {
               # https://patchwork.ozlabs.org/project/uboot/cover/20220116201814.11672-1-alpernebiyasak@gmail.com/
-              url = "https://patchwork.ozlabs.org/series/281327/mbox/";
-              sha256 = "sha256-gjHwZWIPUzWMUk2+7Mhd4XJuorBluVL9J9LaO9fUaKw=";
-            })
-          ])
+          #    url = "https://patchwork.ozlabs.org/series/281327/mbox/";
+          #    sha256 = "sha256-gjHwZWIPUzWMUk2+7Mhd4XJuorBluVL9J9LaO9fUaKw=";
+          #  })
+          #])
         ];
         firmwarePartition = {
             offset = partitionOffset * 512; # 32KiB into the image, or 64 × 512 long sectors

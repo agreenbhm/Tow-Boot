@@ -31180,7 +31180,6 @@ Date: Mon, 26 Apr 2021 10:20:20 -0400
 Subject: [PATCH 2/2] lib/PDCursesMod: Fix build for U-Boot
 
 ---
- lib/Kconfig                                   |   2 +
  lib/Makefile                                  |   1 +
  lib/PDCursesMod/.gitignore                    |   1 -
  lib/PDCursesMod/Kconfig                       |  22 ++
@@ -31264,16 +31263,6 @@ Subject: [PATCH 2/2] lib/PDCursesMod: Fix build for U-Boot
  create mode 100644 lib/PDCursesMod/include/limits.h
  create mode 100644 lib/PDCursesMod/include/wchar.h
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 7288340614..4539fcdfbc 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -710,3 +710,5 @@ config PHANDLE_CHECK_SEQ
- 	  When there are multiple device tree nodes with same name,
-           enable this config option to distinguish them using
- 	  phandles in fdtdec_get_alias_seq() function.
-+
-+source lib/PDCursesMod/Kconfig
 diff --git a/lib/Makefile b/lib/Makefile
 index edc1c3dd4f..32b209d09a 100644
 --- a/lib/Makefile
